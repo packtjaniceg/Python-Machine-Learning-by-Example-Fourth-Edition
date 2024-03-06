@@ -21,8 +21,8 @@ df.columns = ['user_id', 'movie_id', 'rating', 'timestamp']
 print(df)
 
 
-n_users = len(df['user_id'].unique())
-n_movies = len(df['movie_id'].unique())
+n_users = df['user_id'].nunique()
+n_movies = df['movie_id'].nunique()
 print(f"Number of users: {n_users}")
 print(f"Number of movies: {n_movies}")
 
