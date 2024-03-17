@@ -206,11 +206,12 @@ predictions = predict(X_test, weights)
 print(predictions)
 
 
-plt.scatter(X_train[:,0], X_train[:,1], c=['b']*5+['k']*5, marker='o')
-colours = ['k' if prediction >= 0.5 else 'b' for prediction in predictions]
-plt.scatter(X_test[:,0], X_test[:,1], marker='*', c=colours)
-plt.xlabel('x1')
-plt.ylabel('x2')
+plt.scatter(X_train[:5,0], X_train[:5,1], c='b', marker='x')
+plt.scatter(X_train[5:,0], X_train[5:,1], c='k', marker='.')
+for i, prediction in enumerate(predictions):
+    marker = 'X' if prediction < 0.5 else 'o'
+    c = 'b' if prediction < 0.5 else 'k'
+    plt.scatter(X_test[i,0], X_test[i,1], c=c, marker=marker)
 plt.show()
 
 
