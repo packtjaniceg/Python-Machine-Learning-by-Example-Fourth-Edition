@@ -25,9 +25,6 @@ def mse(targets):
 
 
 def weighted_mse(groups):
-    """
-    Calculate weighted MSE of children after a split
-    """
     total = sum(len(group) for group in groups)
     weighted_sum = 0.0
     for group in groups:
@@ -53,12 +50,6 @@ print(f'bedroom-4: {weighted_mse([np.array([400, 600]), np.array([700])]):.4f}')
 # ## Implementing decision tree regression 
 
 def split_node(X, y, index, value):
-    """
-    Split data set X, y based on a feature and a value
-    @param index: index of the feature used for splitting
-    @param value: value of the feature used for splitting
-    @return: left and right child, a child is in the format of [X, y]
-    """
     x_index = X[:, index]
     # if this feature is numerical
     if type(X[0, index]) in [int, float]:
@@ -73,10 +64,6 @@ def split_node(X, y, index, value):
 
 
 def get_best_split(X, y):
-    """
-    Obtain the best splitting point and resulting children for the data set X, y
-    @return: {index: index of the feature, value: feature value, children: left and right children}
-    """
     best_index, best_value, best_score, children = None, None, 1e10, None
     for index in range(len(X[0])):
         for value in np.sort(np.unique(X[:, index])):
@@ -93,13 +80,6 @@ def get_leaf(targets):
 
 
 def split(node, max_depth, min_size, depth):
-    """
-    Split children of a node to construct new nodes or assign them terminals
-    @param node: dict, with children info
-    @param max_depth: maximal depth of the tree
-    @param min_size: minimal samples required to further split a child
-    @param depth: current depth of the node
-    """
     left, right = node['children']
     del (node['children'])
     if left[1].size == 0:
@@ -352,13 +332,18 @@ X_scaled_train = scaler.fit_transform(X_train)
 X_scaled_test = scaler.transform(X_test)
 
 
+from sklearn.model_selection import TimeSeriesSplit
+tscv = TimeSeriesSplit(n_splits=3)
+
+
 param_grid = {
     "alpha": [1e-4, 3e-4, 1e-3],
     "eta0": [0.01, 0.03, 0.1],
 }
 
+
 lr = SGDRegressor(penalty='l2', max_iter=5000, random_state=42)
-grid_search = GridSearchCV(lr, param_grid, cv=5, scoring='r2')
+grid_search = GridSearchCV(lr, param_grid, cv=tscv, scoring='r2')
 grid_search.fit(X_scaled_train, y_train)
 
 
@@ -369,8 +354,6 @@ lr_best = grid_search.best_estimator_
 predictions_lr = lr_best.predict(X_scaled_test)
 
 
-print(f'MSE: {mean_squared_error(y_test, predictions_lr):.3f}')
-print(f'MAE: {mean_absolute_error(y_test, predictions_lr):.3f}')
 print(f'R^2: {r2_score(y_test, predictions_lr):.3f}')
 
 
@@ -381,7 +364,7 @@ param_grid = {
 }
 
 dt = DecisionTreeRegressor(random_state=42)
-grid_search = GridSearchCV(dt, param_grid, cv=5, scoring='r2', n_jobs=-1)
+grid_search = GridSearchCV(dt, param_grid, cv=tscv, scoring='r2', n_jobs=-1)
 grid_search.fit(X_train, y_train)
 
 
@@ -390,8 +373,6 @@ dt_best = grid_search.best_estimator_
 
 predictions_dt = dt_best.predict(X_test)
 
-print(f'MSE: {mean_squared_error(y_test, predictions_dt):.3f}')
-print(f'MAE: {mean_absolute_error(y_test, predictions_dt):.3f}')
 print(f'R^2: {r2_score(y_test, predictions_dt):.3f}')
 
 
@@ -403,7 +384,7 @@ param_grid = {
 }
 
 rf = RandomForestRegressor(n_estimators=30, n_jobs=-1, random_state=42)
-grid_search = GridSearchCV(rf, param_grid, cv=5, scoring='r2', n_jobs=-1)
+grid_search = GridSearchCV(rf, param_grid, cv=tscv, scoring='r2', n_jobs=-1)
 grid_search.fit(X_train, y_train)
 
 
@@ -413,8 +394,6 @@ rf_best = grid_search.best_estimator_
 predictions_rf = rf_best.predict(X_test)
 
 
-print(f'MSE: {mean_squared_error(y_test, predictions_rf):.3f}')
-print(f'MAE: {mean_absolute_error(y_test, predictions_rf):.3f}')
 print(f'R^2: {r2_score(y_test, predictions_rf):.3f}')
 
 
