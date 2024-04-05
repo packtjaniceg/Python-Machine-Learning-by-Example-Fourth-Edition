@@ -28,7 +28,7 @@ print(len(names.words()))
 from nltk.tokenize import word_tokenize
 sent = '''I am reading a book.
           It is Python Machine Learning By Example,
-          3nd edition.'''
+          4th edition.'''
 
 print(word_tokenize(sent))
 
@@ -65,7 +65,7 @@ print([(token.text, token.pos_) for token in tokens2])
 
 # ## NER
 
-tokens3 = nlp('The book written by Hayden Liu in 2020 was sold at $30 in America')
+tokens3 = nlp('The book written by Hayden Liu in 2024 was sold at $30 in America')
 print([(token_ent.text, token_ent.label_) for token_ent in tokens3.ents])
 
 
