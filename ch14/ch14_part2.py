@@ -50,7 +50,7 @@ for hit in hits:
     plt.show()
 
 
-image_query = Image.open("flickr8k/Flicker8k_Dataset/2862004252_53894bb28b.jpg")
+image_query = Image.open("flickr8k/Flicker8k_Dataset/240696675_7d05193aa0.jpg")
 hits = search_top_images(model, all_image_embeddings, image_query, 3)[1:]
 
 plt.imshow(image_query)
@@ -113,4 +113,7 @@ print(f"Accuracy of zero-shot classification: {acc * 100}%")
 # Readers may ignore the next cell.
 
 get_ipython().system('jupyter nbconvert --to python ch14_part2.ipynb --TemplateExporter.exclude_input_prompt=True')
+
+
+
 
