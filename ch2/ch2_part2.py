@@ -163,7 +163,7 @@ print(roc_auc_score(Y_test, pos_prob))
 
 from sklearn.model_selection import StratifiedKFold
 k = 5
-k_fold = StratifiedKFold(n_splits=k)
+k_fold = StratifiedKFold(n_splits=k, random_state=42)
 
 smoothing_factor_option = [1, 2, 3, 4, 5, 6]
 fit_prior_option = [True, False]
