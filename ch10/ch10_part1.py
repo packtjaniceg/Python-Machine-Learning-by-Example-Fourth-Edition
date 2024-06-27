@@ -162,6 +162,11 @@ X_new = binarizer.fit_transform(X)
 print(X_new)
 
 
+# ### Polynomial transformation
+
+from sklearn.preprocessing import 
+
+
 # ---
 
 # Readers may ignore the next cell.
