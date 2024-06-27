@@ -164,7 +164,14 @@ print(X_new)
 
 # ### Polynomial transformation
 
-from sklearn.preprocessing import 
+from sklearn.preprocessing import PolynomialFeatures
+X = [[2, 4],
+     [1, 3],
+     [3, 2],
+     [0, 3]]
+poly = PolynomialFeatures(degree=2)
+X_new = poly.fit_transform(X)
+print(X_new)
 
 
 # ---
